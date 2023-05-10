@@ -7,11 +7,15 @@ public class GameController : MonoBehaviour
 {
     public bool gameOn = true;
     public GameObject pauseMenu;
-    
+    public float diff = 1;
+    public float player_health = 10;
 
 
 
-
+    public void PlayerGetDamage(float damage)
+    {
+        player_health -= damage;
+    }
     public void GameOn(bool it = true)
     {
         if (it == true) Time.timeScale = 1;

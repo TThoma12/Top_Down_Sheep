@@ -18,6 +18,8 @@ public class DirectionPointerController : MonoBehaviour
 
     private void Update()
     {
+        
+        
 
         if (target == null || player == null) return;
 
@@ -43,5 +45,7 @@ public class DirectionPointerController : MonoBehaviour
         // Обновление поворота индикатора, чтобы смотреть на игрока (если ваш индикатор имеет отдельный спрайт и должен быть повернут)
         float angle = Mathf.Atan2(transform.position.y - player.position.y, transform.position.x - player.position.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-    }
+        
+      
+    } 
 }

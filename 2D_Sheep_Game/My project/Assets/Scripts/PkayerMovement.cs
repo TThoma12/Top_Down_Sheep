@@ -10,7 +10,7 @@ public class PkayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Wolf")) collision.gameObject.GetComponent<WolfController>().GetDamage(1.0f);
+        if (collision.gameObject.CompareTag("Wolf")) collision.gameObject.GetComponent<WolfController>().GetDamage(0.5f);
     }
 
     private void Update()
@@ -22,15 +22,19 @@ public class PkayerMovement : MonoBehaviour
 
         if(velocity.magnitude != 0)
         {
-            rb.position += velocity * speed * Time.deltaTime;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+               
+                rb.position += velocity * Time.deltaTime * speed * 3;
+            }
+            else
+            {
+                rb.position += velocity * speed * Time.deltaTime;
+            }
+            ;
         }
 
-        /*if (Input.GetKey(KeyCode.LeftShift))
-        {
-            velocity.x *= 20;
-            velocity.y *= 20;
-            rb.position += velocity * Time.deltaTime;
-        }*/
+        
 
 
 
