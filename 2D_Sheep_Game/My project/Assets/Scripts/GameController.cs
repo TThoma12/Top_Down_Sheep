@@ -11,6 +11,10 @@ public class GameController : MonoBehaviour
     public float player_health = 10;
 
 
+    
+
+
+
 
     public void PlayerGetDamage(float damage)
     {
@@ -24,7 +28,8 @@ public class GameController : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("SampleScene");
+
+        SceneManage.Instance.LoadScene("SampleScene");
     }
     public void PauseGame()
     {
@@ -41,15 +46,19 @@ public class GameController : MonoBehaviour
     public void ExitGame()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("MainMenu");
-        
-    }
+        SceneManage.Instance.LoadScene("MainMenu");
 
-    
+    }
 
     public void OpenSettings()
     {
-        SceneManager.LoadScene("SettingsMenu");
+        SceneManage.Instance.LoadScene("SettingsMenu");
     }
+
+    public void Back()
+    {
+        SceneManage.Instance.GoBack();
+    }
+
 
 }//void

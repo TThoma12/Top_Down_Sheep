@@ -18,7 +18,6 @@ public class SheepController : MonoBehaviour
     [Header("Sheep")]
     public float health = 3;
     public float escapeDistance = 20.0f;
-    private GameController control;
 
     [Header("Panic")]
     public float panicChangeDirectionInterval = 0.5f;
@@ -29,7 +28,7 @@ public class SheepController : MonoBehaviour
 
     void Start()
     {
-        control = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        
         changeDirectionTimer = Random.Range(minCoolDown, maxCoolDown);
         panicChangeDirectionTimer = panicChangeDirectionInterval;
     }

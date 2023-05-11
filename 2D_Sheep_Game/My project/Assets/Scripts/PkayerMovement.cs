@@ -33,14 +33,9 @@ public class PkayerMovement : MonoBehaviour
             }
             ;
         }
-
-        
-
-
-
-
-
     }//Update
+
+
 
 
 
