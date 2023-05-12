@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6920a01b144f6c94baa35657fb3b7048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 1859343188}
   isDelayed: 0
   DelayPower: 1
 --- !u!81 &25205110
