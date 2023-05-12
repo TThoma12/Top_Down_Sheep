@@ -23,12 +23,18 @@ public class SheepController : MonoBehaviour
     public float panicChangeDirectionInterval = 0.5f;
     private float panicChangeDirectionTimer;
 
+    [Header("Audio")]
+    public AudioClip[] sheep_sound;
+    private AudioSource audio;
+    private float sheep_timer_max = 4, timer_sheep;
+
     private Vector2 targetPosition;
     private float changeDirectionTimer;
 
     void Start()
     {
-        
+        timer_sheep = sheep_timer_max;
+        audio = GetComponent<AudioSource>();
         changeDirectionTimer = Random.Range(minCoolDown, maxCoolDown);
         panicChangeDirectionTimer = panicChangeDirectionInterval;
     }
@@ -45,12 +51,30 @@ public class SheepController : MonoBehaviour
         GameObject closestWolf = FindClosestWolf();
         if (closestWolf != null && Vector2.Distance(transform.position, closestWolf.transform.position) <= escapeDistance)
         {
-            EscapeFromWolf(closestWolf);
+            if(Vector2.Distance(transform.position, closestWolf.transform.position) < Vector2.Distance(transform.position, player.transform.position))
+            {
+                EscapeFromWolf(closestWolf);
+            }
+            else
+            {
+                Follow();
+            }
+            
         }
         else
         {
             if (isFolow) Follow();
             Sheep();
+        }
+        timer_sheep -= Time.deltaTime;
+        if (!audio.isPlaying && timer_sheep <= 0 && Vector2.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) < 15)
+        {
+            int random_sound = Random.Range(0, sheep_sound.Length);
+            audio.clip = sheep_sound[random_sound];
+            audio.Play();
+            timer_sheep = sheep_timer_max;
+
+
         }
 
 

@@ -16,10 +16,18 @@ public class WolfController : MonoBehaviour
     private GameController control;
     private Vector2 targetPosition;
     private bool isAnrgy = false;
-    private float r_timer = 20f, Timer;
+    private float r_timer = 20f, Timer, wolf_timer_max = 15, wolf_timer;
+
+    [Header("Audio")]
+    public AudioClip[] wolf_growl;
+    public AudioClip[] wolf__whimper;
+    private AudioSource audio;
 
     private void Start()
     {
+        wolf_timer = Random.Range(1, wolf_timer_max);
+
+        audio = GetComponent<AudioSource>();
         control = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         Timer = r_timer;
         sheep = GameObject.FindGameObjectWithTag("Sheep");
@@ -29,7 +37,7 @@ public class WolfController : MonoBehaviour
         StartCoroutine(ChangeTargetPosition());
 
     }
-
+    
     IEnumerator ChangeTargetPosition()
     {
         while (true)
@@ -44,15 +52,18 @@ public class WolfController : MonoBehaviour
     }
     private void Update()
     {
+        Growl();
         double percent_health = ((double)health * 100) / maxHealth;
-        Debug.Log(percent_health);
+        //Debug.Log(percent_health);
         if (percent_health == 100)
         {
             Timer = r_timer;
             if (!isAnrgy)
             {
-                if(Vector2.Distance(this.gameObject.transform.position, sheep.transform.position) < 15f)
+                if(Vector2.Distance(this.gameObject.transform.position, sheep.transform.position) < 25f)
                 {
+                    
+                    
                     Attack(sheep.transform.position);
                 }
                 else
@@ -139,7 +150,7 @@ public class WolfController : MonoBehaviour
     private void Regenerate()
     {
         Timer -= Time.deltaTime;
-        Debug.Log(Timer);
+        //Debug.Log(Timer);
         if(Timer <= 0)
         {
             health += 0.5f * GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().diff;
@@ -150,6 +161,9 @@ public class WolfController : MonoBehaviour
     public void GetDamage(float damage)
     {
         health -= damage;
+        int random_clip = Random.Range(0, wolf__whimper.Length);
+        audio.clip = wolf__whimper[random_clip];
+        audio.Play();
     }
 
     private void Attack(Vector2 target)
@@ -165,6 +179,22 @@ public class WolfController : MonoBehaviour
         {
             MoveAround();
         }
+
+    }
+
+    private void Growl()
+    {
+        wolf_timer -= Time.deltaTime;
+        //Debug.Log(wolf_timer);
+        if (!audio.isPlaying && Vector2.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position) < 14 && wolf_timer <= 0)
+        {
+            int random_clip = Random.Range(0, wolf_growl.Length);
+            audio.clip = wolf_growl[random_clip];
+            audio.Play();
+            wolf_timer = Random.Range(1, wolf_timer_max);
+        }
+        
+
 
     }
 

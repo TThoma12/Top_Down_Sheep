@@ -727,6 +727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOn: 1
+  player: {fileID: 0}
   pauseMenu: {fileID: 0}
   diff: 1
   player_health: 10
@@ -973,6 +974,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1963837248}
   - component: {fileID: 1963837247}
+  - component: {fileID: 1963837250}
+  - component: {fileID: 1963837249}
   m_Layer: 0
   m_Name: SceneManage
   m_TagString: Untagged
@@ -1007,3 +1010,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1963837249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963837246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75616254bc5435b48b32bb1306539f3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  credits: 
+--- !u!114 &1963837250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963837246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 964778f359e2ee642a5784dc30ccfced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

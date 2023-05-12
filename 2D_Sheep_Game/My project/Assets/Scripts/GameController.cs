@@ -6,18 +6,24 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public bool gameOn = true;
+    public GameObject player;
     public GameObject pauseMenu;
     public float diff = 1;
     public float player_health = 10;
 
 
-    
+    private void Start()
+    {
+        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<PkayerMovement>();
+    }
 
 
 
 
     public void PlayerGetDamage(float damage)
     {
+        player.GetComponent<PkayerMovement>().PlayDamage();
+
         player_health -= damage;
     }
     public void GameOn(bool it = true)
