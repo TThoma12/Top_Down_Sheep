@@ -35,12 +35,17 @@ public class GameController : MonoBehaviour
     public void StartGame()
     {
 
-        SceneManage.Instance.LoadScene("SampleScene");
+        SceneManage.Instance.LoadScene("GameScene");
     }
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     public void ResumeGame()
