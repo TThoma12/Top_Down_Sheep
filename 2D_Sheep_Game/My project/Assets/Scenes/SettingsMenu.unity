@@ -159,7 +159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -307, y: 198}
+  m_AnchoredPosition: {x: -307, y: 153}
   m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &293544118
@@ -387,6 +387,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 0}
   diff: 1
   player_health: 10
+  menu_clip: {fileID: 0}
 --- !u!4 &1340308990
 Transform:
   m_ObjectHideFlags: 0
