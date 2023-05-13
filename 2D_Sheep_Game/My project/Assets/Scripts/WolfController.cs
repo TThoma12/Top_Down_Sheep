@@ -27,7 +27,7 @@ public class WolfController : MonoBehaviour
     private void Awake()
     {
         speed = Random.Range(1, 6);
-        maxHealth = Random.Range(2, 8);
+        maxHealth = Random.Range(2, 6);
         wolfDamage = Random.Range(0.5f, 1.5f);
         float diff = (wolfDamage + speed) / maxHealth;
 
@@ -35,12 +35,9 @@ public class WolfController : MonoBehaviour
         {
             diff = 1f;
         }
-
-        Debug.Log(transform.position.x + "/" + transform.position.y + "\n| speed = " + speed + "\n| Health = " + maxHealth + "\n| damage = " + wolfDamage + "\n|diff = " + diff);
+        
+        Debug.Log(transform.localPosition.x + "/" + transform.localPosition.y + "\n| speed = " + speed + "\n| Health = " + maxHealth + "\n| damage = " + wolfDamage + "\n|diff = " + diff);
         transform.localScale = new Vector3(diff, diff, 1);
-
-
-
 
     }
 
