@@ -2,17 +2,24 @@ using UnityEngine;
 
 public class PkayerMovement : MonoBehaviour
 {
-    public float speed = 20, attack_distance = 5;
+    public float speed = 20, rush = 3;
     public AudioClip[] player_walk;
     public AudioClip player_attack, get_damage_sound;
-    public float damage = 0.5f;
     public AudioSource audio, attack_source;
     private Rigidbody2D rb;
-    
-
+    [Header("Attack")]
+    public float damage = 0.5f;
+    public float attack_distance = 5;
+    private float DelayTimer, delayTime = 0.5f;
+    private float rushTimer, delayRushTime = 2;
+    public float RushScaleCurr;
+    private float RushScaleMax = 1f;
+    public GameObject maskObjectRush, maskAttack;
 
     private void Start()
     {
+        RushScaleCurr = RushScaleMax;
+        DelayTimer = delayTime;
         audio = GetComponent<AudioSource>();
     }
 
@@ -27,19 +34,51 @@ public class PkayerMovement : MonoBehaviour
     }
 
 
+    private void UpdateImage()
+    {
+        RectTransform rectTransform = maskObjectRush.GetComponent<RectTransform>();
+        float right_max = -130f, right_min = 90;
+
+        float percentage = RushScaleCurr / RushScaleMax;
+
+        // Вычисляем значение между right_max и right_min, которое соответствует значению percentage
+        float right_value = Mathf.Lerp(right_max, right_min, percentage);
+
+        // Устанавливаем новое значение для правой стороны rectTransform
+        rectTransform.offsetMax = new Vector2(right_value, rectTransform.offsetMax.y);
+    }
+
+    private void UpdateImageDelay()
+    {
+        RectTransform rectTransform = maskAttack.GetComponent<RectTransform>();
+        float right_max = -21f, right_min = 28f;
+
+        float percentage = DelayTimer / delayTime;
+
+        // Вычисляем значение между right_max и right_min, которое соответствует значению percentage
+        float right_value = Mathf.Lerp(right_max, right_min, percentage);
+
+        // Устанавливаем новое значение для правой стороны rectTransform
+        rectTransform.offsetMax = new Vector2(-right_value, rectTransform.offsetMax.y);
+    }
+
     private void Attack()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2 mousePosition = mouse_position(); // Получаем позицию мыши на сцене
+            Vector2 mousePosition = mouse_position(); 
 
-            Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition); // Проверяем, есть ли коллайдер на этой позиции
 
-            if (hitCollider != null && hitCollider.CompareTag("Wolf") && Vector2.Distance(transform.position, hitCollider.transform.position) <= attack_distance) // Если есть коллайдер и он имеет тег "Wolf"
+            int layerMask = ~(1 << LayerMask.NameToLayer("UI"));
+
+            Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition, layerMask); 
+
+            if (hitCollider != null && hitCollider.CompareTag("Wolf") && Vector2.Distance(transform.position, hitCollider.transform.position) <= attack_distance) 
             {
-                hitCollider.gameObject.GetComponent<WolfController>().GetDamage(damage); // Вызываем метод GetDamage
+                hitCollider.gameObject.GetComponent<WolfController>().GetDamage(damage); 
             }
         }
+
     }
 
     private Vector2 mouse_position()
@@ -51,14 +90,27 @@ public class PkayerMovement : MonoBehaviour
 
     private void Update()
     {
+        UpdateImage();
+        UpdateImageDelay();
+        if (Time.deltaTime == 0)
+        {
+            audio.volume = 0;
+            attack_source.volume = 0;
+        }
+        else
+        {
+            audio.volume = 0.2f;
+            attack_source.volume = 1f;
+        }
 
-        if (Input.GetMouseButtonDown(0))
+        DelayTimer -= Time.deltaTime;
+        if (Input.GetMouseButtonDown(0) && DelayTimer<=0)
         {
             Attack();
             
             attack_source.clip = player_attack;
             attack_source.Play();
-            
+            DelayTimer = delayTime;
         }
 
        
@@ -70,19 +122,40 @@ public class PkayerMovement : MonoBehaviour
         if(velocity.magnitude != 0)
         {
             PlayRandomSound();
+
             if (Input.GetKey(KeyCode.LeftShift))
             {
-               
-                rb.position += velocity * Time.deltaTime * speed * 3;
+                if (RushScaleCurr > 0)
+                {
+                    rb.position += velocity * Time.deltaTime * speed * rush;
+                    RushScaleCurr -= Time.deltaTime;
+                }
+                else
+                {
+                    if (RushScaleCurr < RushScaleMax)
+                    {
+                        RushScaleCurr += Time.deltaTime;
+                    }
+                }                
+
             }
             else
             {
                 rb.position += velocity * speed * Time.deltaTime;
+                if (RushScaleCurr < RushScaleMax)
+                {
+                    RushScaleCurr += Time.deltaTime;
+                }
             }
             ;
         }
         else{
             audio.Stop();
+            rb.position += velocity * speed * Time.deltaTime;
+            if (RushScaleCurr < RushScaleMax)
+            {
+                RushScaleCurr += Time.deltaTime;
+            }
         }
     }//Update
 

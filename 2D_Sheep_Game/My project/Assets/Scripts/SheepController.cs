@@ -8,8 +8,9 @@ public class SheepController : MonoBehaviour
 
     public bool isFolow = true;
     public Transform player;
+    public DirectionPointerController pointer;
     [Header("Movement")]
-    public float followDistance = 3.0f;
+    public float followDistance = 20f;
     public float moveSpeed = 2.0f;
     public float minDistance = 1.0f;
     public float maxDistance = 5.0f;
@@ -17,7 +18,7 @@ public class SheepController : MonoBehaviour
     public float rushSpeedMultiplier = 2.0f;
     [Header("Sheep")]
     public float health = 3;
-    public float escapeDistance = 20.0f;
+    public float escapeDistance = 6f;
 
     [Header("Panic")]
     public float panicChangeDirectionInterval = 0.5f;
@@ -30,6 +31,22 @@ public class SheepController : MonoBehaviour
 
     private Vector2 targetPosition;
     private float changeDirectionTimer;
+
+    private void CheckPlayerDistance()
+    {
+        if (player == null || pointer == null) return;
+
+        if (Vector2.Distance(transform.position, player.transform.position) <= followDistance)
+        {
+
+            pointer.gameObject.SetActive(false);
+        }
+        else
+        {
+
+            pointer.gameObject.SetActive(true);
+        }
+    }
 
     void Start()
     {
@@ -47,7 +64,7 @@ public class SheepController : MonoBehaviour
 
     void Update()
     {
-
+        CheckPlayerDistance();
         GameObject closestWolf = FindClosestWolf();
         if (closestWolf != null && Vector2.Distance(transform.position, closestWolf.transform.position) <= escapeDistance)
         {
@@ -134,7 +151,7 @@ public class SheepController : MonoBehaviour
             angle = Vector2.Angle(randomDirection, directionToPlayer);
         }
 
-        targetPosition = (Vector2)player.position + randomDirection * followDistance;
+        targetPosition = (Vector2)player.position + randomDirection * 3f;
     }
 
     GameObject FindClosestWolf()

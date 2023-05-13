@@ -4,48 +4,73 @@ using UnityEngine;
 
 public class DirectionPointerController : MonoBehaviour
 {
-    public Transform target; // Объект, к которому указывает индикатор направления
-    private Transform player; // Объект игрока
-    public float radius; // Расстояние от игрока до индикатора направления
-    public float rotationSpeed; // Скорость вращения индикатора
+    public Transform target;
+    public GameObject pointer_prefab;  // новая переменная для префаба указателя
+    private Transform player;
+    public float radius;
+    public float rotationSpeed;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        // Установка начальной позиции индикатора на заданное расстояние от игрока
-        transform.position = player.position + Vector3.right * radius;
+
+        SheepController sheepController = target.GetComponent<SheepController>();
+        if (sheepController != null)
+        {
+            sheepController.pointer = this;
+        }
+        else
+        {
+            Debug.LogError("Цель не имеет компонента SheepController!");
+        }
+
+
+        GameObject[] allSheeps = GameObject.FindGameObjectsWithTag("Sheep");
+
+       
+        foreach (GameObject sheep in allSheeps)
+        {
+            GameObject newPointer = Instantiate(pointer_prefab, player.position + Vector3.right * radius, Quaternion.identity);
+            newPointer.GetComponent<DirectionPointerController>().target = sheep.transform;
+        }
     }
 
     private void Update()
     {
-        
-        
 
-        if (target == null || player == null) return;
+        if (target == null || player == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        // Вычисление вектора направления от игрока к цели
         Vector2 directionToTarget = target.position - player.position;
         directionToTarget.Normalize();
 
-        // Получение текущего вектора направления индикатора
         Vector2 directionToIndicator = transform.position - player.position;
         directionToIndicator.Normalize();
 
-        // Вычисление угла между текущим направлением индикатора и направлением к цели
         float angleDiff = Vector2.SignedAngle(directionToIndicator, directionToTarget);
 
-        // Вращение индикатора вокруг игрока
         transform.RotateAround(player.position, Vector3.forward, angleDiff * rotationSpeed * Time.deltaTime);
 
-        // Обновление позиции индикатора, чтобы он следовал за игроком и сохранял радиус
         Vector2 offset = transform.position - player.position;
         offset.Normalize();
         transform.position = (Vector2)player.position + offset * radius;
 
-        // Обновление поворота индикатора, чтобы смотреть на игрока (если ваш индикатор имеет отдельный спрайт и должен быть повернут)
         float angle = Mathf.Atan2(transform.position.y - player.position.y, transform.position.x - player.position.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        
-      
-    } 
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 }

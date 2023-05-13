@@ -106,6 +106,8 @@ MonoBehaviour:
   wolfDamage: 1
   minCoolDown: 1
   maxCooldown: 6
+  player_dis: 10
+  sheep_dis: 15
   wolf_growl:
   - {fileID: 8300000, guid: 400eff538f72730419686788c4670163, type: 3}
   - {fileID: 8300000, guid: 1e7de3f9f3f01f246bafbf5eae410a87, type: 3}
