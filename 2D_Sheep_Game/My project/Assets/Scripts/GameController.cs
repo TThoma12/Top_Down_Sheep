@@ -8,9 +8,9 @@ public class GameController : MonoBehaviour
 
 
     public bool gameOn = true;
-    public GameObject player;
-    public GameObject sheep;
+    public GameObject sheep, player;
     public GameObject pauseMenu;
+    public GameObject sheep_prefab;
     public float diff = 1;
     public float player_health = 10;
     [Header("Audio")]
@@ -21,8 +21,14 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        audio = GetComponent<AudioSource>();
-        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<PkayerMovement>();
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+
+
+            audio = GetComponent<AudioSource>();
+
     }
 
 
@@ -39,11 +45,7 @@ public class GameController : MonoBehaviour
         if (it == false) Time.timeScale = 0;
     }
 
-    public void StartGame()
-    {
-        Time.timeScale = 1;
-        SceneManage.Instance.LoadScene("GameScene");
-    }
+   
     public void PauseGame()
     {
         pauseMenu.SetActive(true);

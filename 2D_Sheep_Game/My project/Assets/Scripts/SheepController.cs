@@ -26,6 +26,7 @@ public class SheepController : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip[] sheep_sound;
+    public AudioClip bite;
     private AudioSource audio;
     private float sheep_timer_max = 4, timer_sheep;
 
@@ -50,6 +51,7 @@ public class SheepController : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         timer_sheep = sheep_timer_max;
         audio = GetComponent<AudioSource>();
         changeDirectionTimer = Random.Range(minCoolDown, maxCoolDown);
@@ -59,11 +61,17 @@ public class SheepController : MonoBehaviour
     public void GetDamage(float damage)
     {
         health -= damage;
+        audio.clip = bite;
+        if(!audio.isPlaying) audio.Play();
     }
 
 
     void Update()
     {
+
+
+        if (health <= 0) Destroy(gameObject);
+
         CheckPlayerDistance();
         GameObject closestWolf = FindClosestWolf();
         if (closestWolf != null && Vector2.Distance(transform.position, closestWolf.transform.position) <= escapeDistance)
@@ -113,6 +121,8 @@ public class SheepController : MonoBehaviour
 
             float distance = Vector2.Distance(transform.position, player.position);
 
+
+
             if (distance < minDistance)
             {
                 SetNewTargetPosition();
@@ -129,10 +139,20 @@ public class SheepController : MonoBehaviour
             {
                 SetNewTargetPosition();
                 changeDirectionTimer = Random.Range(minCoolDown, maxCoolDown);
-                Debug.Log(changeDirectionTimer);
+                
             }
 
             float currentMoveSpeed = distance > maxDistance ? moveSpeed * rushSpeedMultiplier : moveSpeed;
+
+            if (transform.position.x < player.transform.position.x)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (transform.position.x > player.transform.position.x)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, currentMoveSpeed * Time.deltaTime);
         }
 
@@ -184,7 +204,16 @@ public class SheepController : MonoBehaviour
 
             targetPosition = (Vector2)transform.position + escapeDirection * escapeDistance;
 
-            panicChangeDirectionTimer = Random.Range(minCoolDown, maxCoolDown);
+        if (transform.position.x < targetPosition.x)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else if (transform.position.x > targetPosition.x)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        panicChangeDirectionTimer = Random.Range(minCoolDown, maxCoolDown);
         
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }

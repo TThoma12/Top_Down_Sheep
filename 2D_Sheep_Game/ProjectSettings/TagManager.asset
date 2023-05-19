@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Sheep
+  - Wolf
+  - WorldEndAltar
+  - Slider
+  - SheepCounter
+  - StartPoint
   layers:
   - Default
   - TransparentFX
@@ -40,4 +46,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 2782571519
     locked: 0

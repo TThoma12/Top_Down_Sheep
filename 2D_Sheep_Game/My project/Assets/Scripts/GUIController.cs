@@ -10,11 +10,12 @@ public class GUIController : MonoBehaviour
     private GameController controller;
     public GameObject GameOverMenu;
     public TextMeshProUGUI reason;
-
+    public GameObject sheep_gui;
     [Header("PlayerHealth")]
     public GameObject[] player_health;
     [Header("SheepHealth")]
     public GameObject[] sheep_health;
+    private GameObject[] sheeps;
 
 
 
@@ -22,6 +23,9 @@ public class GUIController : MonoBehaviour
 
     void Start()
     {
+
+
+
         player = GameObject.FindGameObjectWithTag("Player");
         sheep = GameObject.FindGameObjectWithTag("Sheep").GetComponent<SheepController>();
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -30,12 +34,21 @@ public class GUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        sheeps = GameObject.FindGameObjectsWithTag("Sheep");
         PlayerHealth();
-        SheepHealth();
 
-        if(sheep.health <= 0)
+        if(sheeps.Length > 1)
         {
-            reason.text = "The sheep have died";
+            sheep_gui.active = false;
+        }
+        else
+        {
+            sheep_gui.active = true;
+        }
+
+        if(sheeps.Length == 0)
+        {
+            reason.text = "All sheeps have died";
             Time.timeScale = 0;
             GameOverMenu.active = true;
         }
@@ -105,7 +118,7 @@ public class GUIController : MonoBehaviour
         }
     }//void
 
-    private void SheepHealth()
+    /*private void SheepHealth()
     {
         if(sheep.health <= 4 && sheep.health >3)
         {
@@ -135,6 +148,6 @@ public class GUIController : MonoBehaviour
             sheep_health[2].active = false;
             sheep_health[3].active = false;
         }
-    } 
+    } */
 
 }

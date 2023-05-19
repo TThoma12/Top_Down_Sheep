@@ -5,6 +5,7 @@ using UnityEngine;
 public class WolfController : MonoBehaviour
 {
     private GameObject sheep;
+    private GameObject[] sheeps;
     private Rigidbody2D rb;
     [Header("Wolf")]
     public float health = 3, maxHealth = 3;
@@ -28,12 +29,15 @@ public class WolfController : MonoBehaviour
     {
         speed = Random.Range(1, 6);
         maxHealth = Random.Range(2, 6);
-        wolfDamage = Random.Range(0.5f, 1.5f);
-        float diff = (wolfDamage + speed) / maxHealth;
+        wolfDamage = Random.Range(0.2f, 1f);
+        float diff = speed / maxHealth;
 
         if(diff > 1f)
         {
             diff = 1f;
+        } else if (diff < 0.5)
+        {
+            diff = 0.5f;
         }
         
         Debug.Log(transform.localPosition.x + "/" + transform.localPosition.y + "\n| speed = " + speed + "\n| Health = " + maxHealth + "\n| damage = " + wolfDamage + "\n|diff = " + diff);
@@ -41,14 +45,29 @@ public class WolfController : MonoBehaviour
 
     }
 
+    private GameObject GetClosestSheep()
+    {
+
+        GameObject closest_sheep = sheeps[0];
+        foreach(GameObject unit in  sheeps)
+        {
+            if (Vector2.Distance(transform.position, unit.transform.position) < Vector2.Distance(transform.position, closest_sheep.transform.position)) closest_sheep = unit;
+
+
+
+        }
+        return closest_sheep;
+    }
+
     private void Start()
     {
+        
         wolf_timer = Random.Range(1, wolf_timer_max);
         health = maxHealth;
         audio = GetComponent<AudioSource>();
         control = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         Timer = r_timer;
-        sheep = GameObject.FindGameObjectWithTag("Sheep");
+
         rb = GetComponent<Rigidbody2D>();
         Cooldown = Random.Range(minCoolDown, maxCooldown);
         
@@ -70,9 +89,11 @@ public class WolfController : MonoBehaviour
     }
     private void Update()
     {
+        sheeps = GameObject.FindGameObjectsWithTag("Sheep");
         Growl();
         double percent_health = ((double)health * 100) / maxHealth;
         //Debug.Log(percent_health);
+        sheep = GetClosestSheep();
         if (percent_health == 100)
         {
             Timer = r_timer;

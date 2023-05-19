@@ -7,6 +7,9 @@ TagManager:
   - Sheep
   - Wolf
   - WorldEndAltar
+  - Slider
+  - SheepCounter
+  - StartPoint
   layers:
   - Default
   - TransparentFX

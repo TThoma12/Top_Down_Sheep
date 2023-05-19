@@ -121,6 +121,14 @@ public class PkayerMovement : MonoBehaviour
 
         if(velocity.magnitude != 0)
         {
+            if(hor < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            } else if( hor > 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
             PlayRandomSound();
 
             if (Input.GetKey(KeyCode.LeftShift))

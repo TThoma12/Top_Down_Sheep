@@ -14,15 +14,7 @@ public class DirectionPointerController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
-        SheepController sheepController = target.GetComponent<SheepController>();
-        if (sheepController != null)
-        {
-            sheepController.pointer = this;
-        }
-        else
-        {
-            Debug.LogError("Цель не имеет компонента SheepController!");
-        }
+       
 
 
         GameObject[] allSheeps = GameObject.FindGameObjectsWithTag("Sheep");
@@ -30,6 +22,7 @@ public class DirectionPointerController : MonoBehaviour
        
         foreach (GameObject sheep in allSheeps)
         {
+            Debug.Log(sheep.transform.position);
             GameObject newPointer = Instantiate(pointer_prefab, player.position + Vector3.right * radius, Quaternion.identity);
             newPointer.GetComponent<DirectionPointerController>().target = sheep.transform;
         }
@@ -37,6 +30,8 @@ public class DirectionPointerController : MonoBehaviour
 
     private void Update()
     {
+
+       // if (target == null) Destroy(gameObject);
 
         if (target == null || player == null)
         {

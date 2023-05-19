@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class SceneManage : MonoBehaviour
 {
@@ -9,8 +11,13 @@ public class SceneManage : MonoBehaviour
 
     private Stack<string> sceneHistory;
 
+
+
     private void Awake()
     {
+
+       
+
         if (instance != null)
         {
             Destroy(gameObject);
@@ -41,6 +48,8 @@ public class SceneManage : MonoBehaviour
             Debug.Log("No scenes in history!");
         }
     }
+
+
 
     public static SceneManage Instance { get { return instance; } }
 }
